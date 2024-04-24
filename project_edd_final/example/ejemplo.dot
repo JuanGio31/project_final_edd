@@ -1,0 +1,10 @@
+digraph G {
+    rankdir="LR"
+  subgraph cluster_0 {
+    style=filled;
+    color=lightgrey;
+    node [style=filled,color=white];
+    "H" -> "o" -> "l" -> "a" -> " " -> "m" -> "u" -> "n" -> "d" -> "o";
+    
+  }
+}

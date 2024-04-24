@@ -20,7 +20,7 @@ public class FilesControl {
      * Metodo para obtener un file
      *
      * @param filtro la extension predeterminada que se muestra en el
-     * filechooser
+     *               filechooser
      * @return File
      * @throws java.io.FileNotFoundException
      */
@@ -104,7 +104,7 @@ public class FilesControl {
      */
     private File crearArchivo(String name) {
         try {
-            File myObj = new File("web/" + name + ".html");
+            File myObj = new File(name);
             if (myObj.createNewFile()) {
                 System.out.println("File created: " + myObj.getName());
             } else {
@@ -120,7 +120,7 @@ public class FilesControl {
      * Metodo para escribir en un archivo
      *
      * @param contenido cadena de caracteres
-     * @param fileName el path del archivo
+     * @param fileName  el path del archivo
      */
     public void escribirEnFile(String contenido, String fileName) {
         try {
@@ -147,7 +147,7 @@ public class FilesControl {
     /**
      * Elimina los archivos con una determinada extensión de una carpeta
      *
-     * @param path Carpeta de la cual eliminar los archivos
+     * @param path      Carpeta de la cual eliminar los archivos
      * @param extension Extensión de los archivos a eliminar
      */
     public void eliminarPorExtension(String path, final String extension) {
@@ -159,22 +159,6 @@ public class FilesControl {
         });
         for (File archivo : archivos) {
             archivo.delete();
-        }
-    }
-
-    /**
-     * Metodo para crear un directorio/sitio web
-     *
-     * @param name nombre/path del directorio
-     */
-    public void crearDirectorio(String name) {
-        File directorio = new File("web/" + name);
-        if (!directorio.exists()) {
-            if (directorio.mkdirs()) {
-                System.out.println("Directorio creado");
-            } else {
-                System.out.println("Error al crear directorio");
-            }
         }
     }
 }
