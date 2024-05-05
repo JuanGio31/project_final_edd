@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.example.modelo.estructuras.GrafoDirigido;
+import org.example.modelo.estructuras.Peso;
 
 /**
  * Clase que gestiona los ficheros
@@ -16,11 +18,59 @@ public class FilesControl {
         return null;
     }
 
+    public GrafoDirigido leerMapa() {
+        GrafoDirigido grafo = new GrafoDirigido();
+
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.txt", "TXT");
+        FileReader fr = null;
+        BufferedReader br = null;
+        try {
+            File file = seleccionarArchivo(filtro);
+
+            fr = new FileReader(file);
+            br = new BufferedReader(fr);
+
+            String linea;
+            String[] contenido = null;
+            try {
+                while ((linea = br.readLine()) != null) {
+                    contenido = linea.split("\\|");
+
+                    grafo.addNodo(contenido[0]);
+                    grafo.addNodo(contenido[1]);
+
+                    Peso peso = new Peso(
+                            Integer.parseInt(contenido[2]),
+                            Integer.parseInt(contenido[3]),
+                            Integer.parseInt(contenido[4]),
+                            Integer.parseInt(contenido[5]),
+                            Integer.parseInt(contenido[6]));
+
+                    try {
+                        grafo.addArco(contenido[0], contenido[1], peso);
+                    } catch (Exception e) {
+                    }
+                }
+                return grafo;
+            } catch (IOException ex) {
+                System.out.println("IOex");
+            }
+        } catch (FileNotFoundException ex) {
+            System.out.println("Archivo no encontrado");
+        } finally {
+            try {
+                br.close();
+            } catch (IOException ignored) {
+            }
+        }
+        return null;
+    }
+
     /**
      * Metodo para obtener un file
      *
      * @param filtro la extension predeterminada que se muestra en el
-     *               filechooser
+     * filechooser
      * @return File
      * @throws java.io.FileNotFoundException
      */
@@ -120,7 +170,7 @@ public class FilesControl {
      * Metodo para escribir en un archivo
      *
      * @param contenido cadena de caracteres
-     * @param fileName  el path del archivo
+     * @param fileName el path del archivo
      */
     public void escribirEnFile(String contenido, String fileName) {
         try {
@@ -147,7 +197,7 @@ public class FilesControl {
     /**
      * Elimina los archivos con una determinada extensión de una carpeta
      *
-     * @param path      Carpeta de la cual eliminar los archivos
+     * @param path Carpeta de la cual eliminar los archivos
      * @param extension Extensión de los archivos a eliminar
      */
     public void eliminarPorExtension(String path, final String extension) {

@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import org.example.modelo.estructuras.Arco;
 
 /**
  * @author giovanic
@@ -16,29 +18,26 @@ import java.io.InputStream;
 public class Grafico {
 
     public void writerDot(String str) {
-        String bf = getString(str);
-        String cadena = "digraph G {\n"
-                + "    rankdir=\"LR\"\n"
-                + "  subgraph cluster_0 {\n"
-                + "    style=filled;\n"
-                + "    color=lightgrey;\n"
-                + "    node [style=filled,color=white];\n"
-                + "    " + bf + ";\n"
+        String cadena = """
+                        digraph G {
+                            rankdir="LR"
+                            """ + str + "\n"
                 + "    \n"
-                + "  }\n"
                 + "}\n";
         FilesControl control = new FilesControl();
         control.escribirEnFile(cadena, "example/ejemplo.dot");
     }
 
-    private static String getString(@NotNull String str) {
-        char[] tmp = str.trim().toCharArray();
-        String bf = "";
-        for (int i = 0; i < tmp.length; i++) {
-            bf += (i < tmp.length - 1) ? "\"" + tmp[i] + "\" -> " : "\"" + tmp[i] + "\"";
-
+    public String getValue(List<Arco> arco) {
+        String str = "";
+        for (int i = 0; i < arco.size(); i++) {
+            str += arco.get(i).getOrigen().getNombre() + "  -> "
+                    + arco.get(i).getDestino().getNombre()
+                    + " [label  = \"   "
+                    + arco.get(i).getPeso().getDistancia()
+                    + " \"] ;\n\t\t";
         }
-        return bf;
+        return str;
     }
 
     public void entrada(String fileName) throws IOException {
@@ -49,27 +48,31 @@ public class Grafico {
         } catch (IOException ignored) {
         }
 
-/*
-        try (InputStream dot = getClass().getResourceAsStream("/archive/archive.dot")) {
-            MutableGraph g = new Parser().read(dot);
-            //Graphviz.fromGraph(g).width(200).render(Format.PNG).toFile(new File("example/graph.png"));
-            Graphviz.fromGraph(g).width(300).render(Format.PNG).toFile(new File("example/graph.png"));
-            g.graphAttrs()
-                    .add(Color.WHITE.gradient(Color.rgb("888888")).background().angle(90))
-                    .nodeAttrs().add(Color.WHITE.fill())
-                    .nodes().forEach(node
-                            -> node.add(
-                            Color.named(node.name().toString()),
-                            Style.lineWidth(4), Style.FILLED));
-            Grafico.fromGraph(g).width(700).render(Format.PNG).toFile(new File("example/ex4-2.png"));
-*/
+        /*
+         * try (InputStream dot =
+         * getClass().getResourceAsStream("/archive/archive.dot")) {
+         * MutableGraph g = new Parser().read(dot);
+         * //Graphviz.fromGraph(g).width(200).render(Format.PNG).toFile(new
+         * File("example/graph.png"));
+         * Graphviz.fromGraph(g).width(300).render(Format.PNG).toFile(new
+         * File("example/graph.png"));
+         * g.graphAttrs()
+         * .add(Color.WHITE.gradient(Color.rgb("888888")).background().angle(90))
+         * .nodeAttrs().add(Color.WHITE.fill())
+         * .nodes().forEach(node
+         * -> node.add(
+         * Color.named(node.name().toString()),
+         * Style.lineWidth(4), Style.FILLED));
+         * Grafico.fromGraph(g).width(700).render(Format.PNG).toFile(new
+         * File("example/ex4-2.png"));
+         */
     }
 
     public void graphvizJava(String direccionDot, String direccionPng) {
         dibujar(direccionDot, direccionPng);
     }
 
-    public void dibujar(String direccionDot, String direccionPng) {
+    private void dibujar(String direccionDot, String direccionPng) {
         try {
             ProcessBuilder pbuilder;
 
@@ -80,11 +83,10 @@ public class Grafico {
              */
             pbuilder = new ProcessBuilder("dot", "-Tpng", "-o", direccionPng, direccionDot);
             pbuilder.redirectErrorStream(true);
-            //Ejecuta el proceso
+            // Ejecuta el proceso
             pbuilder.start();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
         }
     }
 }

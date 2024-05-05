@@ -6,37 +6,17 @@ package org.example.modelo;
  */
 public class Trafico {
 
-    String origen;
-    String destino;
-    int hora_inicio;
-    int hora_finaliza;
-    int probabilidad_trafico;
+    private int hora_inicio;
+    private int hora_finaliza;
+    private int probabilidad_trafico;
 
-    public Trafico(String origen, String destino, int hora_inicio, int hora_finaliza, int probabilidad_trafico) {
-        this.origen = origen;
-        this.destino = destino;
+    public Trafico(int hora_inicio, int hora_finaliza, int probabilidad_trafico) {
         this.hora_inicio = hora_inicio;
         this.hora_finaliza = hora_finaliza;
         this.probabilidad_trafico = probabilidad_trafico;
     }
 
     public Trafico() {
-    }
-
-    public String getOrigen() {
-        return origen;
-    }
-
-    public void setOrigen(String origen) {
-        this.origen = origen;
-    }
-
-    public String getDestino() {
-        return destino;
-    }
-
-    public void setDestino(String destino) {
-        this.destino = destino;
     }
 
     public int getHora_inicio() {

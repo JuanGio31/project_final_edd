@@ -8,6 +8,9 @@ import javaswingdev.drawer.DrawerController;
 import javaswingdev.drawer.Drawer;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import org.example.modelo.FilesControl;
+import org.example.modelo.Grafico;
+import org.example.modelo.estructuras.GrafoDirigido;
 
 /**
  *
@@ -33,7 +36,7 @@ public class PrincipalFr extends javax.swing.JFrame {
         loadImage(ruta);
 
         initReloj();
-        
+
         drawer = Drawer.newDrawer(this)
                 .leftDrawer(true)
                 .drawerWidth(285)
@@ -181,7 +184,7 @@ public class PrincipalFr extends javax.swing.JFrame {
 
     private void initReloj() {
         // El formato es HH:mm:ss
-        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("HH:mm:ss"); 
+        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("HH:mm:ss");
 
         Runnable runnable = new Runnable() {
             @Override
@@ -209,6 +212,13 @@ public class PrincipalFr extends javax.swing.JFrame {
 
     private void btnCargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarArchivoActionPerformed
         System.out.println("SALE UN FILECHOOSER");
+        FilesControl control = new FilesControl();
+        GrafoDirigido ft = control.leerMapa();
+        if (ft != null) {
+            Grafico gf = new Grafico();
+            gf.writerDot(gf.getValue(ft.getArcos()));
+            gf.graphvizJava("example/ejemplo.dot", "example/ej.png");
+        }
     }//GEN-LAST:event_btnCargarArchivoActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
