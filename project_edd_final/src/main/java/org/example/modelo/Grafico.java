@@ -40,11 +40,11 @@ public class Grafico {
         return str;
     }
 
-    public void entrada(String fileName) throws IOException {
+    public void dibujar() throws IOException {
         try {
-            InputStream dot = new FileInputStream(new File("example/" + fileName + ".dot"));
+            InputStream dot = new FileInputStream(new File("example/ejemplo.dot"));
             var g = new Parser().read(dot);
-            Graphviz.fromGraph(g).width(500).render(Format.PNG).toFile(new File("example/" + fileName + ".png"));
+            Graphviz.fromGraph(g).width(500).render(Format.PNG).toFile(new File("example/ej.png"));
         } catch (IOException ignored) {
         }
 

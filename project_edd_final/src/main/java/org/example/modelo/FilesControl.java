@@ -2,6 +2,7 @@ package org.example.modelo;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.example.modelo.estructuras.GrafoDirigido;
@@ -22,46 +23,37 @@ public class FilesControl {
         GrafoDirigido grafo = new GrafoDirigido();
 
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.txt", "TXT");
-        FileReader fr = null;
-        BufferedReader br = null;
         try {
             File file = seleccionarArchivo(filtro);
 
-            fr = new FileReader(file);
-            br = new BufferedReader(fr);
+            FileReader fr = new FileReader(file);
+            Scanner scan = new Scanner(fr);
 
-            String linea;
             String[] contenido = null;
-            try {
-                while ((linea = br.readLine()) != null) {
-                    contenido = linea.split("\\|");
 
-                    grafo.addNodo(contenido[0]);
-                    grafo.addNodo(contenido[1]);
+            while (scan.hasNextLine()) {
+                String linea = scan.nextLine();
 
-                    Peso peso = new Peso(
-                            Integer.parseInt(contenido[2]),
-                            Integer.parseInt(contenido[3]),
-                            Integer.parseInt(contenido[4]),
-                            Integer.parseInt(contenido[5]),
-                            Integer.parseInt(contenido[6]));
+                contenido = linea.split("\\|");
 
-                    try {
-                        grafo.addArco(contenido[0], contenido[1], peso);
-                    } catch (Exception e) {
-                    }
+                grafo.addNodo(contenido[0]);
+                grafo.addNodo(contenido[1]);
+
+                Peso peso = new Peso(
+                        Integer.parseInt(contenido[2]),
+                        Integer.parseInt(contenido[3]),
+                        Integer.parseInt(contenido[4]),
+                        Integer.parseInt(contenido[5]),
+                        Integer.parseInt(contenido[6]));
+
+                try {
+                    grafo.addArco(contenido[0], contenido[1], peso);
+                } catch (Exception e) {
                 }
-                return grafo;
-            } catch (IOException ex) {
-                System.out.println("IOex");
             }
-        } catch (FileNotFoundException ex) {
-            System.out.println("Archivo no encontrado");
-        } finally {
-            try {
-                br.close();
-            } catch (IOException ignored) {
-            }
+            return grafo;
+        } catch (FileNotFoundException | NullPointerException e) {
+            System.out.println("error -> No se pudo leer el archivo");
         }
         return null;
     }

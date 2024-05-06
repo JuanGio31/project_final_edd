@@ -1,6 +1,9 @@
 package org.example.view;
 
 import java.awt.GridLayout;
+import java.util.List;
+import javax.swing.JComboBox;
+import org.example.modelo.estructuras.Vertice;
 
 /**
  *
@@ -12,7 +15,7 @@ public class PanelOption extends javax.swing.JPanel {
      * Creates new form PanelOption
      */
     public PanelOption() {
-        initComponents();        
+        initComponents();
     }
 
     /**
@@ -46,7 +49,6 @@ public class PanelOption extends javax.swing.JPanel {
         origenLb.setText("ORIGEN");
         origenLb.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        origenComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         origenComboBox.setMaximumSize(new java.awt.Dimension(32767, 35));
         origenComboBox.setMinimumSize(new java.awt.Dimension(82, 35));
         origenComboBox.setPreferredSize(new java.awt.Dimension(82, 35));
@@ -57,7 +59,6 @@ public class PanelOption extends javax.swing.JPanel {
         destinoLb.setText("DESTINO");
         destinoLb.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        destinoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         destinoComboBox.setMaximumSize(new java.awt.Dimension(32767, 35));
         destinoComboBox.setMinimumSize(new java.awt.Dimension(82, 35));
         destinoComboBox.setPreferredSize(new java.awt.Dimension(82, 35));
@@ -176,15 +177,23 @@ public class PanelOption extends javax.swing.JPanel {
         System.out.println("<<NUEVO RECORRIDO>>");
     }//GEN-LAST:event_btnNuevoActionPerformed
 
-    private void organizar() {
-        setLayout(new GridLayout(6, 2, 15, 25));
-        add(origenLb);
-        add(origenComboBox);
-        add(destinoLb);
-        add(destinoComboBox);
-        add(irBtn);
+    public void actualizarComponentes(List<Vertice> vertices) {
+        refreshListas(vertices);
     }
 
+    private void refreshListas(List<Vertice> vertices) {
+        llenarComboBox(vertices, origenComboBox);
+        llenarComboBox(vertices, destinoComboBox);
+    }
+
+    /**
+     * Metodo para llenar comboBox de tableros
+     */
+    private void llenarComboBox(List<Vertice> temp, JComboBox box) {
+        for (int i = 0; i < temp.size(); i++) {
+            box.addItem(temp.get(i).getNombre());
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenArbol;
     private javax.swing.JButton btnNuevo;

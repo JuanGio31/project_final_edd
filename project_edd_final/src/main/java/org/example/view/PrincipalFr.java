@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javaswingdev.drawer.DrawerController;
 import javaswingdev.drawer.Drawer;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.example.modelo.FilesControl;
@@ -19,8 +20,8 @@ import org.example.modelo.estructuras.GrafoDirigido;
 public class PrincipalFr extends javax.swing.JFrame {
 
     public DrawerController drawer;
-    private PanelOption po;
-    private String ruta;
+    private final PanelOption po;
+    private static final String RUTA = "/home/giovanic/practicagit/final edd/project_final_edd/project_edd_final/example/ej.png";
 
     /**
      * Creates new form PrincipalFr
@@ -31,9 +32,6 @@ public class PrincipalFr extends javax.swing.JFrame {
         Image icon = new ImageIcon(getClass().getResource("/icons/mapa.png")).getImage();
         setIconImage(icon);
         po = new PanelOption();
-
-        ruta = "https://upload.wikimedia.org/wikipedia/commons/5/50/KDE_neon_6_Breeze_Desktop_English.png";
-        loadImage(ruta);
 
         initReloj();
 
@@ -46,9 +44,16 @@ public class PrincipalFr extends javax.swing.JFrame {
     }
 
     private void loadImage(String ruta) {
-        jTextPane1.setContentType("text/html");
-        jTextPane1.setText("<html><img src='" + ruta + "' \"width=\"" + (jTextPane1.getWidth() - 15)
-                + "\" height=\"auto\" /></html>");
+        //        jTextPane1.setContentType("text/html");
+        //        jTextPane1.setText("<html><img src='"
+        //                + ruta
+        //                + "' \"width=\"" + (jTextPane1.getWidth() - 15)
+        //                + "\" height=\"auto\" "
+        //                + "/></html>");
+        jTextPane1.setText(" ");
+        Icon icon = new ImageIcon(RUTA);
+        jTextPane1.insertIcon(icon);
+        jTextPane1.repaint();
     }
 
     /**
@@ -213,11 +218,24 @@ public class PrincipalFr extends javax.swing.JFrame {
     private void btnCargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarArchivoActionPerformed
         System.out.println("SALE UN FILECHOOSER");
         FilesControl control = new FilesControl();
-        GrafoDirigido ft = control.leerMapa();
-        if (ft != null) {
+        GrafoDirigido grafo = control.leerMapa();
+        if (grafo != null) {
+
             Grafico gf = new Grafico();
-            gf.writerDot(gf.getValue(ft.getArcos()));
+            po.actualizarComponentes(grafo.getNodos());
+
+            gf.writerDot(gf.getValue(grafo.getArcos()));
             gf.graphvizJava("example/ejemplo.dot", "example/ej.png");
+
+            Runnable runnable = () -> {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                }
+                loadImage(RUTA);
+            };
+            Thread hilo = new Thread(runnable);
+            hilo.start();
         }
     }//GEN-LAST:event_btnCargarArchivoActionPerformed
 
@@ -229,8 +247,7 @@ public class PrincipalFr extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnRecargarImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecargarImgActionPerformed
-        jTextPane1.setText(" ");
-        loadImage(ruta);
+        loadImage(RUTA);
     }//GEN-LAST:event_btnRecargarImgActionPerformed
 
 

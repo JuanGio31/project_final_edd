@@ -13,8 +13,10 @@ public class GrafoDirigido {
     }
 
     public void addNodo(String nombre) {
-        Vertice nodo = new Vertice(nombre);
-        nodos.add(nodo);
+        Vertice nodo = buscar(nombre);
+        if (nodo != null) {
+            nodos.add(nodo);
+        }
     }
 
     public void addArco(String origen, String destino, Peso peso) throws Exception {
@@ -40,6 +42,14 @@ public class GrafoDirigido {
         arco.setPeso(peso);
         arcos.add(arco);
         nodoOrigen.agregarArco(arco);
+    }
+
+    private Vertice buscar(String nombre) {
+        Vertice nodo = buscarNodo(nombre);
+        if (nodo == null) {
+            return new Vertice(nombre);
+        }
+        return null;
     }
 
     public Vertice buscarNodo(String nombre) {

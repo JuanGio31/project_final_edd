@@ -16,6 +16,8 @@ public class Main {
             fr.setVisible(true);
         });
 
+
+
         //Grafico temp = new Grafico();
         //temp.writerDot("abacaddb");
         //temp.graphvizJava("example/ejemplo.dot", "example/ej.png");
