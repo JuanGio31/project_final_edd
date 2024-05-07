@@ -6,9 +6,10 @@ import java.time.format.DateTimeFormatter;
 import javaswingdev.drawer.DrawerController;
 import javaswingdev.drawer.Drawer;
 import javax.swing.*;
+import org.example.modelo.Congestionamiento;
 import org.example.modelo.FilesControl;
 import org.example.modelo.Grafico;
-import org.example.modelo.estructuras.GrafoDirigido;
+import org.example.modelo.estructuras.Grafo;
 
 /**
  *
@@ -16,10 +17,11 @@ import org.example.modelo.estructuras.GrafoDirigido;
  */
 public class PrincipalFr extends javax.swing.JFrame {
 
+    private final FilesControl control;
     public DrawerController drawer;
     private final PanelOption po;
     private static final String RUTA = "example/mapa.png";
-    private GrafoDirigido grafo;
+    private Grafo grafo;
 
     /**
      * Creates new form PrincipalFr
@@ -27,9 +29,14 @@ public class PrincipalFr extends javax.swing.JFrame {
     public PrincipalFr() {
         initComponents();
         setTitle("MAPS");
+        control = new FilesControl();
+        control.eliminarArchivo(RUTA);
+
         Image icon = new ImageIcon(getClass().getResource("/icons/mapa.png")).getImage();
         setIconImage(icon);
         po = new PanelOption();
+        po.setTxtArea(jTextArea1);
+        po.setPadre(this);
 
         initReloj();
 
@@ -60,23 +67,25 @@ public class PrincipalFr extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         opciones = new javax.swing.JButton();
         etiquetaHora = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         scrollPane = new javax.swing.JScrollPane();
         imagen = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         btnCargarArchivo = new javax.swing.JMenuItem();
-        btnRecargarImg = new javax.swing.JMenuItem();
+        btnTrafico = new javax.swing.JMenuItem();
         btnSalir = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        masZoom = new javax.swing.JMenuItem();
-        menosZoom = new javax.swing.JMenuItem();
+        masZ = new javax.swing.JMenu();
+        minZ = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jPanel2.setMinimumSize(new java.awt.Dimension(450, 604));
         jPanel2.setPreferredSize(new java.awt.Dimension(450, 604));
 
-        opciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/menu-hamburguesa.png"))); // NOI18N
+        opciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/configs.png"))); // NOI18N
         opciones.setMaximumSize(new java.awt.Dimension(40, 40));
         opciones.setMinimumSize(new java.awt.Dimension(40, 40));
         opciones.setPreferredSize(new java.awt.Dimension(40, 40));
@@ -87,8 +96,16 @@ public class PrincipalFr extends javax.swing.JFrame {
         });
 
         etiquetaHora.setFont(new java.awt.Font("URW Gothic L", 1, 18)); // NOI18N
+        etiquetaHora.setForeground(new java.awt.Color(255, 255, 255));
         etiquetaHora.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         etiquetaHora.setText("Hora");
+
+        jTextArea1.setEditable(false);
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -96,9 +113,12 @@ public class PrincipalFr extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(opciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(etiquetaHora, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(opciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(etiquetaHora, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -108,7 +128,9 @@ public class PrincipalFr extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(etiquetaHora, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(opciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(557, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 311, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -119,22 +141,23 @@ public class PrincipalFr extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE))
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(scrollPane)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 612, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        jMenu1.setText("Archivo");
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/carpeta.png"))); // NOI18N
 
-        btnCargarArchivo.setText("Cargar Archivo");
+        btnCargarArchivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/imagen.png"))); // NOI18N
+        btnCargarArchivo.setText("Cargar Mapa");
         btnCargarArchivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCargarArchivoActionPerformed(evt);
@@ -142,14 +165,16 @@ public class PrincipalFr extends javax.swing.JFrame {
         });
         jMenu1.add(btnCargarArchivo);
 
-        btnRecargarImg.setText("Recargar Img");
-        btnRecargarImg.addActionListener(new java.awt.event.ActionListener() {
+        btnTrafico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/semaforos.png"))); // NOI18N
+        btnTrafico.setText("Añadir Trafico");
+        btnTrafico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRecargarImgActionPerformed(evt);
+                btnTraficoActionPerformed(evt);
             }
         });
-        jMenu1.add(btnRecargarImg);
+        jMenu1.add(btnTrafico);
 
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/salir.png"))); // NOI18N
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,25 +185,21 @@ public class PrincipalFr extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Zoom");
-
-        masZoom.setText("+ Zoom");
-        masZoom.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                masZoomActionPerformed(evt);
+        masZ.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/acercar.png"))); // NOI18N
+        masZ.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                masZMouseClicked(evt);
             }
         });
-        jMenu2.add(masZoom);
+        jMenuBar1.add(masZ);
 
-        menosZoom.setText("- Zoom");
-        menosZoom.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menosZoomActionPerformed(evt);
+        minZ.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/alejar.png"))); // NOI18N
+        minZ.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                minZMouseClicked(evt);
             }
         });
-        jMenu2.add(menosZoom);
-
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(minZ);
 
         setJMenuBar(jMenuBar1);
 
@@ -222,16 +243,18 @@ public class PrincipalFr extends javax.swing.JFrame {
     }
 
     private void opcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionesActionPerformed
+        showDrawer();
+    }//GEN-LAST:event_opcionesActionPerformed
+
+    public void showDrawer() {
         if (drawer.isShow()) {
             drawer.hide();
         } else {
             drawer.show();
         }
-    }//GEN-LAST:event_opcionesActionPerformed
-
+    }
     private void btnCargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarArchivoActionPerformed
         System.out.println("SALE UN FILECHOOSER");
-        FilesControl control = new FilesControl();
         control.eliminarArchivo("example/mapa.png");
 
         grafo = control.leerMapa();
@@ -239,7 +262,7 @@ public class PrincipalFr extends javax.swing.JFrame {
             po.setGrafo(grafo);
 
             Grafico gf = new Grafico();
-            po.actualizarComponentes(grafo.getNodos());
+            po.actualizarComponentes(grafo.getVertices());
 
             gf.writerDot(gf.getValue(grafo.getArcos()));
             gf.graphvizJava("example/mapa.dot", "example/mapa.png");
@@ -247,7 +270,7 @@ public class PrincipalFr extends javax.swing.JFrame {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    while (!FilesControl.existencia("example/mapa.png")) {
+                    while (!control.existencia("example/mapa.png")) {
                         try {
                             Thread.sleep(900);
                             System.out.println("cargando imagen");
@@ -269,25 +292,28 @@ public class PrincipalFr extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSalirActionPerformed
 
-    private void btnRecargarImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecargarImgActionPerformed
-        imagen.removeAll();
-        imagen.validate();
-        imagen.repaint();
-        actualizarImagen(RUTA);
-    }//GEN-LAST:event_btnRecargarImgActionPerformed
+    private void btnTraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTraficoActionPerformed
+        Congestionamiento con = control.leerFileTrafico();
+        for (var o : con.getTraficos()) {
+            System.out.println(o.toString());
+        }
+    }//GEN-LAST:event_btnTraficoActionPerformed
 
-    private void masZoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_masZoomActionPerformed
+    private void minZMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minZMouseClicked
+        if (control.existencia(RUTA)) {
+            Image img = new ImageIcon(RUTA).getImage();
+            Image zoom = img.getScaledInstance(imagen.getWidth() - 100, imagen.getHeight() - 100, Image.SCALE_SMOOTH);
+            imagen.setIcon(new ImageIcon(zoom));
+        }
+    }//GEN-LAST:event_minZMouseClicked
 
-        Image img = new ImageIcon(RUTA).getImage();
-        Image zoom = img.getScaledInstance(imagen.getWidth() + 100, imagen.getHeight() + 100, Image.SCALE_REPLICATE);
-        imagen.setIcon(new ImageIcon(zoom));
-    }//GEN-LAST:event_masZoomActionPerformed
-
-    private void menosZoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menosZoomActionPerformed
-        Image img = new ImageIcon(RUTA).getImage();
-        Image zoom = img.getScaledInstance(imagen.getWidth() - 100, imagen.getHeight() - 100, Image.SCALE_REPLICATE);
-        imagen.setIcon(new ImageIcon(zoom));
-    }//GEN-LAST:event_menosZoomActionPerformed
+    private void masZMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masZMouseClicked
+        if (control.existencia(RUTA)) {
+            Image img = new ImageIcon(RUTA).getImage();
+            Image zoom = img.getScaledInstance(imagen.getWidth() + 100, imagen.getHeight() + 100, Image.SCALE_SMOOTH);
+            imagen.setIcon(new ImageIcon(zoom));
+        }
+    }//GEN-LAST:event_masZMouseClicked
 
     private void actualizarImagen(String path) {
         ImageIcon icono = new ImageIcon(path);
@@ -299,17 +325,18 @@ public class PrincipalFr extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnCargarArchivo;
-    private javax.swing.JMenuItem btnRecargarImg;
     private javax.swing.JMenuItem btnSalir;
+    private javax.swing.JMenuItem btnTrafico;
     private javax.swing.JLabel etiquetaHora;
     private javax.swing.JLabel imagen;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JMenuItem masZoom;
-    private javax.swing.JMenuItem menosZoom;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JMenu masZ;
+    private javax.swing.JMenu minZ;
     private javax.swing.JButton opciones;
     private javax.swing.JScrollPane scrollPane;
     // End of variables declaration//GEN-END:variables

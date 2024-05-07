@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import org.example.modelo.estructuras.GrafoDirigido;
+import org.example.modelo.estructuras.Grafo;
 import org.example.modelo.estructuras.Peso;
 
 /**
@@ -14,12 +14,14 @@ import org.example.modelo.estructuras.Peso;
  */
 public class FilesControl {
 
-    public ArrayList<Dato> datos() {
-        return null;
-    }
-
-    public GrafoDirigido leerMapa() {
-        GrafoDirigido grafo = new GrafoDirigido();
+    /**
+     * Metodo para crear un onjeto 'grafo' inicializando sus valores mediante un
+     * file
+     *
+     * @return Grafo
+     */
+    public Grafo leerMapa() {
+        Grafo grafo = new Grafo();
 
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.txt", "TXT");
         try {
@@ -35,8 +37,8 @@ public class FilesControl {
 
                 contenido = linea.split("\\|");
 
-                grafo.addNodo(contenido[0]);
-                grafo.addNodo(contenido[1]);
+                grafo.addVertice(contenido[0]);
+                grafo.addVertice(contenido[1]);
 
                 Peso peso = new Peso(
                         Integer.parseInt(contenido[2]),
@@ -51,6 +53,45 @@ public class FilesControl {
                 }
             }
             return grafo;
+        } catch (FileNotFoundException | NullPointerException e) {
+            System.out.println("error -> No se pudo leer el archivo");
+        }
+        return null;
+    }
+
+    /**
+     * Metodo para para la creacion de un Lista de objetos 'trafico'
+     * inicializando sus valores mediante un file
+     *
+     * @return lista de traficos
+     */
+    public Congestionamiento leerFileTrafico() {
+        Congestionamiento congestionamiento = new Congestionamiento();
+
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.txt", "TXT");
+        try {
+            File file = seleccionarArchivo(filtro);
+
+            FileReader fr = new FileReader(file);
+            Scanner scan = new Scanner(fr);
+
+            String[] arr = null;
+
+            while (scan.hasNextLine()) {
+                String linea = scan.nextLine();
+                arr = linea.split("\\|");
+
+                Trafico trafico = new Trafico(
+                        arr[0],
+                        arr[1],
+                        Integer.parseInt(arr[2]),
+                        Integer.parseInt(arr[3]),
+                        Integer.parseInt(arr[4])
+                );
+                congestionamiento.addTrafico(trafico);
+            }
+            
+            return congestionamiento;
         } catch (FileNotFoundException | NullPointerException e) {
             System.out.println("error -> No se pudo leer el archivo");
         }
@@ -209,7 +250,7 @@ public class FilesControl {
      * @param path ruta del archivo
      * @return regresa un valor booleando en caso de que es archivo exista o no
      */
-    public static boolean existencia(String path) {
+    public boolean existencia(String path) {
         File fr = new File(path);
         return fr.exists();
     }

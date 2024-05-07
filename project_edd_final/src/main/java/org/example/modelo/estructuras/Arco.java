@@ -11,6 +11,12 @@ public class Arco {
         this.peso = peso;
     }
 
+    public Arco(Vertice origen, Vertice destino, Peso peso) {
+        this.origen = origen;
+        this.destino = destino;
+        this.peso = peso;
+    }
+
     public Arco() {
     }
 

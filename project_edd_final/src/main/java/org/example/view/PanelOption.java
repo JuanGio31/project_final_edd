@@ -2,8 +2,8 @@ package org.example.view;
 
 import java.util.List;
 import javax.swing.JComboBox;
-import org.example.modelo.estructuras.GrafoDirigido;
-import org.example.modelo.estructuras.Vertice;
+import javax.swing.JTextArea;
+import org.example.modelo.estructuras.*;
 
 /**
  *
@@ -11,7 +11,9 @@ import org.example.modelo.estructuras.Vertice;
  */
 public class PanelOption extends javax.swing.JPanel {
 
-    private GrafoDirigido grafo;
+    private Grafo grafo;
+    private JTextArea area;
+    private PrincipalFr fr;
 
     /**
      * Creates new form PanelOption
@@ -20,8 +22,16 @@ public class PanelOption extends javax.swing.JPanel {
         initComponents();
     }
 
-    public void setGrafo(GrafoDirigido grafo) {
+    public void setPadre(PrincipalFr fr) {
+        this.fr = fr;
+    }
+
+    public void setGrafo(Grafo grafo) {
         this.grafo = grafo;
+    }
+
+    public void setTxtArea(JTextArea area) {
+        this.area = area;
     }
 
     /**
@@ -85,7 +95,7 @@ public class PanelOption extends javax.swing.JPanel {
         tipoLb.setText("TIPO");
         tipoLb.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        tipoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        tipoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Vehiculo", "Caminata" }));
         tipoComboBox.setMaximumSize(new java.awt.Dimension(32767, 35));
         tipoComboBox.setMinimumSize(new java.awt.Dimension(82, 35));
         tipoComboBox.setPreferredSize(new java.awt.Dimension(82, 35));
@@ -177,16 +187,22 @@ public class PanelOption extends javax.swing.JPanel {
             if (origenComboBox.getSelectedIndex() != destinoComboBox.getSelectedIndex()) {
                 int indexOrigen = origenComboBox.getSelectedIndex();
                 int indexDestino = destinoComboBox.getSelectedIndex();
-
-                grafo.rutaefec(
-                        grafo.getNodos().get(indexOrigen).getNombre(),
-                        grafo.getNodos().get(indexDestino).getNombre());
+                Vertice start = grafo.getVertices().get(indexOrigen);
+                Vertice end = grafo.getVertices().get(indexDestino);
+                recorrido(start.getNombre(), end.getNombre());
+                fr.showDrawer();
+                System.out.println(start.getNombre() + " -> " + end.getNombre());
             }
         }
     }//GEN-LAST:event_irBtnActionPerformed
 
+    private void recorrido(String origen, String destino) {
+        area.setText("");
+        area.setText(Dijkstra.shortestPathBetween(grafo, grafo.buscarNodo(origen), grafo.buscarNodo(destino)));
+    }
     private void btnGenArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenArbolActionPerformed
         System.out.println("<<NUEVO ARBOL>>");
+        fr.showDrawer();
     }//GEN-LAST:event_btnGenArbolActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed

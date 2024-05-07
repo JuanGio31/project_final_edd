@@ -4,23 +4,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class GrafoDirigido {
+public class Grafo {
 
-    private List<Vertice> nodos = new ArrayList<>();
-    private List<Arco> arcos = new ArrayList<>();
+    private List<Vertice> vertices;
+    private List<Arco> arcos;
+    private boolean esDirigido;
 
-    public GrafoDirigido() {
+    public Grafo() {
+        esDirigido = false;
+        vertices = new ArrayList<>();
+        arcos = new ArrayList<>();
     }
 
-    public void addNodo(String nombre) {
+    public Grafo(boolean esDirigido) {
+        this.esDirigido = esDirigido;
+        arcos = new ArrayList<>();
+        vertices = new ArrayList<>();
+    }
+
+    public void addVertice(String nombre) {
         Vertice nodo = buscar(nombre);
         if (nodo != null) {
-            nodos.add(nodo);
+            vertices.add(nodo);
         }
     }
 
     public void addArco(String origen, String destino, Peso peso) throws Exception {
-
         Vertice nodoOrigen = buscarNodo(origen);
         Vertice nodoDestino = buscarNodo(destino);
 
@@ -35,13 +44,32 @@ public class GrafoDirigido {
         addArco(nodoOrigen, nodoDestino, peso);
     }
 
+    public void removeEdge(Vertice v1, Vertice v2) {
+        v1.removeArco(v2);
+        if (!this.esDirigido) {
+            v2.removeArco(v1);
+        }
+    }
+
     private void addArco(Vertice nodoOrigen, Vertice nodoDestino, Peso peso) {
-        Arco arco = new Arco();
-        arco.setOrigen(nodoOrigen);
-        arco.setDestino(nodoDestino);
-        arco.setPeso(peso);
-        arcos.add(arco);
-        nodoOrigen.agregarArco(arco);
+//        if (!this.isWeighted) {
+//            weight = null;
+//        }
+        nodoOrigen.addArco(nodoDestino, peso);
+        arcos.add(new Arco(nodoOrigen, nodoDestino, peso));
+        if (!this.esDirigido) {
+            nodoDestino.addArco(nodoOrigen, peso);
+        }
+    }
+
+    public void removeVertice(Vertice ve) {
+        this.vertices.remove(ve);
+    }
+
+    public void print() {
+        for (Vertice v : this.vertices) {
+            v.print(true);
+        }
     }
 
     private Vertice buscar(String nombre) {
@@ -53,7 +81,7 @@ public class GrafoDirigido {
     }
 
     public Vertice buscarNodo(String nombre) {
-        for (Vertice nodo : nodos) {
+        for (Vertice nodo : vertices) {
             if (nodo.getNombre().equals(nombre)) {
                 return nodo;
             }
@@ -105,14 +133,14 @@ public class GrafoDirigido {
         while (!pilaDeNodos.isEmpty()) {
             Vertice actual = pilaDeNodos.pop();
 
-            // ignore los nodos ya visitados
+            // ignore los vertices ya visitados
             if (nodosVisitados.contains(actual)) {
                 continue;
             }
 
             // es el nodo que estamos buscando ?
             if (actual.equals(nodoDestino)) {
-                nodosRuta.addAll(pilaDeNodos);
+                //nodosRuta.addAll(pilaDeNodos);
                 nodosRuta.add(nodoDestino);
                 return true;
             } else {
@@ -144,12 +172,12 @@ public class GrafoDirigido {
         }
     }
 
-    public List<Vertice> getNodos() {
-        return nodos;
+    public List<Vertice> getVertices() {
+        return vertices;
     }
 
     public void setNodos(List<Vertice> nodos) {
-        this.nodos = nodos;
+        this.vertices = nodos;
     }
 
     public List<Arco> getArcos() {

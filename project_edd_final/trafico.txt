@@ -1,0 +1,6 @@
+Quetzaltenango|Retalhuleu|12|14|40
+Retalhuleu|Quetzaltenango|5|8|45
+Retalhuleu|Quetzaltenango|15|18|80
+Suchitepéquez|Retalhuleu|13|15|40
+Quetzaltenango|Salola|12|14|40
+Retalhuleu|Suchitepequez|16|21|63

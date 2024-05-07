@@ -13,12 +13,12 @@ import org.example.modelo.estructuras.Arco;
 public class Grafico {
 
     public void writerDot(String str) {
-        String cadena = """
-                        digraph G {
-                            rankdir="LR"
-                            """ + str + "\n"
-                + "    \n"
-                + "}\n";
+        String cadena = "digraph G{\n   rankdir=\"LR\"\n        " + str + "\n}";
+//        String cadena = """
+//                        digraph G {
+//                            \trankdir="LR"
+//                        \t""" + str
+//                + "}";
         FilesControl control = new FilesControl();
         control.escribirEnFile(cadena, "example/mapa.dot");
     }
@@ -30,7 +30,7 @@ public class Grafico {
                     + arco.get(i).getDestino().getNombre()
                     + " [label  = \"   "
                     + arco.get(i).getPeso().getDistancia()
-                    + " \"] ;\n\t\t";
+                    + " \"] ;\n        ";
         }
         return str;
     }
