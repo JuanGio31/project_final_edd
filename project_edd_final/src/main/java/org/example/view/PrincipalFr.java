@@ -35,7 +35,7 @@ public class PrincipalFr extends javax.swing.JFrame {
         Image icon = new ImageIcon(getClass().getResource("/icons/mapa.png")).getImage();
         setIconImage(icon);
         po = new PanelOption();
-        po.setTxtArea(jTextArea1);
+        po.setTxtArea(areaContenido);
         po.setPadre(this);
 
         initReloj();
@@ -68,7 +68,8 @@ public class PrincipalFr extends javax.swing.JFrame {
         opciones = new javax.swing.JButton();
         etiquetaHora = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        areaContenido = new javax.swing.JTextArea();
+        btnAvanzar = new javax.swing.JButton();
         scrollPane = new javax.swing.JScrollPane();
         imagen = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -86,6 +87,7 @@ public class PrincipalFr extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(450, 604));
 
         opciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/configs.png"))); // NOI18N
+        opciones.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         opciones.setMaximumSize(new java.awt.Dimension(40, 40));
         opciones.setMinimumSize(new java.awt.Dimension(40, 40));
         opciones.setPreferredSize(new java.awt.Dimension(40, 40));
@@ -100,12 +102,21 @@ public class PrincipalFr extends javax.swing.JFrame {
         etiquetaHora.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         etiquetaHora.setText("Hora");
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
-        jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        areaContenido.setEditable(false);
+        areaContenido.setColumns(20);
+        areaContenido.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        areaContenido.setForeground(new java.awt.Color(255, 255, 255));
+        areaContenido.setRows(5);
+        jScrollPane1.setViewportView(areaContenido);
+
+        btnAvanzar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sig.png"))); // NOI18N
+        btnAvanzar.setText("Avanzar");
+        btnAvanzar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAvanzar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAvanzarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -114,11 +125,12 @@ public class PrincipalFr extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(opciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(etiquetaHora, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(etiquetaHora, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAvanzar)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -128,7 +140,9 @@ public class PrincipalFr extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(etiquetaHora, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(opciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 311, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 263, Short.MAX_VALUE)
+                .addComponent(btnAvanzar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -141,9 +155,9 @@ public class PrincipalFr extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 613, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -315,6 +329,31 @@ public class PrincipalFr extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_masZMouseClicked
 
+    private void btnAvanzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvanzarActionPerformed
+        if (contador - 1 < po.getCamino().size()) {
+            if (contador == 1) {
+                areaContenido.append("      RECORRIDO\n");
+            } else {
+                areaContenido.append((contador - 1) + ") avance\n");
+                for (int i = 1; i < contador; i++) {
+                    areaContenido.append(po.getCamino().get(i) + "\n");
+                }
+                areaContenido.append("\n");
+            }
+        }
+        if (contador == po.getCamino().size()) {
+            areaContenido.append("KM RECORRIDOS: " + po.getCamino().get(0));
+        }
+        if (contador > po.getCamino().size()) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "No hay destinos que recorrer",
+                    "Alerta",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        contador++;
+    }//GEN-LAST:event_btnAvanzarActionPerformed
+
     private void actualizarImagen(String path) {
         ImageIcon icono = new ImageIcon(path);
         icono.getImage().flush(); // Forzar la actualización de la caché
@@ -323,7 +362,15 @@ public class PrincipalFr extends javax.swing.JFrame {
         imagen.setIcon(icono);
     }
 
+    private void refreshTxt() {
+
+    }
+
+    //variables propias
+    int contador = 1;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea areaContenido;
+    private javax.swing.JButton btnAvanzar;
     private javax.swing.JMenuItem btnCargarArchivo;
     private javax.swing.JMenuItem btnSalir;
     private javax.swing.JMenuItem btnTrafico;
@@ -334,7 +381,6 @@ public class PrincipalFr extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JMenu masZ;
     private javax.swing.JMenu minZ;
     private javax.swing.JButton opciones;

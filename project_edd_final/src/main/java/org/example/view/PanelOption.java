@@ -1,5 +1,6 @@
 package org.example.view;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
@@ -14,12 +15,14 @@ public class PanelOption extends javax.swing.JPanel {
     private Grafo grafo;
     private JTextArea area;
     private PrincipalFr fr;
+    private List<String> camino;
 
     /**
      * Creates new form PanelOption
      */
     public PanelOption() {
         initComponents();
+        camino = new ArrayList<>();
     }
 
     public void setPadre(PrincipalFr fr) {
@@ -198,7 +201,8 @@ public class PanelOption extends javax.swing.JPanel {
 
     private void recorrido(String origen, String destino) {
         area.setText("");
-        area.setText(Dijkstra.shortestPathBetween(grafo, grafo.buscarNodo(origen), grafo.buscarNodo(destino)));
+        camino = Dijkstra.shortestPathBetween(grafo, grafo.buscarNodo(origen), grafo.buscarNodo(destino));
+        fr.contador = 1;
     }
     private void btnGenArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenArbolActionPerformed
         System.out.println("<<NUEVO ARBOL>>");
@@ -207,6 +211,9 @@ public class PanelOption extends javax.swing.JPanel {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         System.out.println("<<NUEVO RECORRIDO>>");
+        camino.clear();
+        area.setText("");
+        fr.contador = 1;
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     public void actualizarComponentes(List<Vertice> vertices) {
@@ -226,6 +233,11 @@ public class PanelOption extends javax.swing.JPanel {
             box.addItem(temp.get(i).getNombre());
         }
     }
+
+    public List<String> getCamino() {
+        return camino;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenArbol;
     private javax.swing.JButton btnNuevo;

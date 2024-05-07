@@ -39,8 +39,9 @@ public class Dijkstra {
         return new Dictionary[]{distances, previous};
     }
 
-    public static String shortestPathBetween(Grafo g, Vertice origen, Vertice destino) {
-        String str = "";
+    public static List<String> shortestPathBetween(Grafo g, Vertice origen, Vertice destino) {
+        //String str = "";
+        List<String> camino = new ArrayList<>();
         Dictionary[] dijkstraDictionaries = dijkstra(g, origen);
         Dictionary distances = dijkstraDictionaries[0];
         Dictionary previous = dijkstraDictionaries[1];
@@ -48,7 +49,7 @@ public class Dijkstra {
         Integer distance = (Integer) distances.get(destino.getNombre());
         System.out.println("Shortest Distance between " + origen.getNombre() + " and " + destino.getNombre());
         System.out.println(distance);
-        str += "DISTANCIA RECORRIDA: " + distance + " KM.\n";
+        camino.add(distance.toString());
 
         ArrayList<Vertice> path = new ArrayList<>();
         Vertice v = destino;
@@ -60,9 +61,10 @@ public class Dijkstra {
         System.out.println("Camino corto (s)");
         for (Vertice pathVertex : path) {
             System.out.println(pathVertex.getNombre());
-            str += pathVertex.getNombre() + ".\n";
+            //str += pathVertex.getNombre() + ".\n";
+            camino.add(pathVertex.getNombre());
         }
-        return str;
+        return camino;
     }
 
     public static void dijkstraResultPrinter(Dictionary[] d) {
