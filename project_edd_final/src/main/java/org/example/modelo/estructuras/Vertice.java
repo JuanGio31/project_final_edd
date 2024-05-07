@@ -42,4 +42,9 @@ public class Vertice {
         }
         return vertices;
     }
+
+    @Override
+    public String toString() {
+        return "Vertice{" + "nombre=" + nombre + '}';
+    }
 }

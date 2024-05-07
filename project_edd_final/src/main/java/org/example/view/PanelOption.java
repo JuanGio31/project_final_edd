@@ -1,8 +1,8 @@
 package org.example.view;
 
-import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.JComboBox;
+import org.example.modelo.estructuras.GrafoDirigido;
 import org.example.modelo.estructuras.Vertice;
 
 /**
@@ -11,11 +11,17 @@ import org.example.modelo.estructuras.Vertice;
  */
 public class PanelOption extends javax.swing.JPanel {
 
+    private GrafoDirigido grafo;
+
     /**
      * Creates new form PanelOption
      */
     public PanelOption() {
         initComponents();
+    }
+
+    public void setGrafo(GrafoDirigido grafo) {
+        this.grafo = grafo;
     }
 
     /**
@@ -167,6 +173,16 @@ public class PanelOption extends javax.swing.JPanel {
 
     private void irBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_irBtnActionPerformed
         System.out.println("PRUEBA BOTON <<IR>>");
+        if (origenComboBox.getSelectedIndex() != -1 && destinoComboBox.getSelectedIndex() != -1) {
+            if (origenComboBox.getSelectedIndex() != destinoComboBox.getSelectedIndex()) {
+                int indexOrigen = origenComboBox.getSelectedIndex();
+                int indexDestino = destinoComboBox.getSelectedIndex();
+
+                grafo.rutaefec(
+                        grafo.getNodos().get(indexOrigen).getNombre(),
+                        grafo.getNodos().get(indexDestino).getNombre());
+            }
+        }
     }//GEN-LAST:event_irBtnActionPerformed
 
     private void btnGenArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenArbolActionPerformed

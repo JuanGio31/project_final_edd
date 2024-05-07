@@ -3,12 +3,7 @@ package org.example.modelo;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import guru.nidi.graphviz.parse.Parser;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 import org.example.modelo.estructuras.Arco;
 
@@ -25,7 +20,7 @@ public class Grafico {
                 + "    \n"
                 + "}\n";
         FilesControl control = new FilesControl();
-        control.escribirEnFile(cadena, "example/ejemplo.dot");
+        control.escribirEnFile(cadena, "example/mapa.dot");
     }
 
     public String getValue(List<Arco> arco) {

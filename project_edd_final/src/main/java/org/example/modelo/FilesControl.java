@@ -1,8 +1,7 @@
 package org.example.modelo;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.example.modelo.estructuras.GrafoDirigido;
@@ -202,5 +201,16 @@ public class FilesControl {
         for (File archivo : archivos) {
             archivo.delete();
         }
+    }
+
+    /**
+     * Metodo para comprobar la existencia de un archivo
+     *
+     * @param path ruta del archivo
+     * @return regresa un valor booleando en caso de que es archivo exista o no
+     */
+    public static boolean existencia(String path) {
+        File fr = new File(path);
+        return fr.exists();
     }
 }

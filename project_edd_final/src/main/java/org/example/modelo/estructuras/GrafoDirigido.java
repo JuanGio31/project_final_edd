@@ -128,6 +128,22 @@ public class GrafoDirigido {
         return false;
     }
 
+    public void rutaefec(String origen, String destino) {
+        try {
+            List<Vertice> camino = buscarRuta(origen, destino);
+            if (camino == null) {
+                System.out.println("Camino " + origen + " -> " + destino + " no encontrado");
+            } else {
+                System.out.println("Camino " + origen + " -> " + destino + " encontrado");
+                for (Vertice nodo : camino) {
+                    System.out.println(nodo.getNombre());
+                }
+            }
+
+        } catch (Exception e) {
+        }
+    }
+
     public List<Vertice> getNodos() {
         return nodos;
     }
@@ -143,5 +159,4 @@ public class GrafoDirigido {
     public void setArcos(List<Arco> arcos) {
         this.arcos = arcos;
     }
-
 }

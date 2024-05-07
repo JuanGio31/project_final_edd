@@ -1,14 +1,11 @@
 package org.example.view;
 
-import java.awt.Color;
-import java.awt.Image;
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javaswingdev.drawer.DrawerController;
 import javaswingdev.drawer.Drawer;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import org.example.modelo.FilesControl;
 import org.example.modelo.Grafico;
 import org.example.modelo.estructuras.GrafoDirigido;
@@ -21,7 +18,8 @@ public class PrincipalFr extends javax.swing.JFrame {
 
     public DrawerController drawer;
     private final PanelOption po;
-    private static final String RUTA = "/home/giovanic/practicagit/final edd/project_final_edd/project_edd_final/example/ej.png";
+    private static final String RUTA = "example/mapa.png";
+    private GrafoDirigido grafo;
 
     /**
      * Creates new form PrincipalFr
@@ -44,16 +42,9 @@ public class PrincipalFr extends javax.swing.JFrame {
     }
 
     private void loadImage(String ruta) {
-        //        jTextPane1.setContentType("text/html");
-        //        jTextPane1.setText("<html><img src='"
-        //                + ruta
-        //                + "' \"width=\"" + (jTextPane1.getWidth() - 15)
-        //                + "\" height=\"auto\" "
-        //                + "/></html>");
-        jTextPane1.setText(" ");
         Icon icon = new ImageIcon(RUTA);
-        jTextPane1.insertIcon(icon);
-        jTextPane1.repaint();
+        imagen.setIcon(icon);
+
     }
 
     /**
@@ -69,13 +60,16 @@ public class PrincipalFr extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         opciones = new javax.swing.JButton();
         etiquetaHora = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        scrollPane = new javax.swing.JScrollPane();
+        imagen = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         btnCargarArchivo = new javax.swing.JMenuItem();
         btnRecargarImg = new javax.swing.JMenuItem();
         btnSalir = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        masZoom = new javax.swing.JMenuItem();
+        menosZoom = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,8 +111,8 @@ public class PrincipalFr extends javax.swing.JFrame {
                 .addContainerGap(557, Short.MAX_VALUE))
         );
 
-        jTextPane1.setEditable(false);
-        jScrollPane1.setViewportView(jTextPane1);
+        scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        scrollPane.setViewportView(imagen);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -126,15 +120,15 @@ public class PrincipalFr extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 668, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(scrollPane)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -165,6 +159,26 @@ public class PrincipalFr extends javax.swing.JFrame {
         jMenu1.add(btnSalir);
 
         jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Zoom");
+
+        masZoom.setText("+ Zoom");
+        masZoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                masZoomActionPerformed(evt);
+            }
+        });
+        jMenu2.add(masZoom);
+
+        menosZoom.setText("- Zoom");
+        menosZoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menosZoomActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menosZoom);
+
+        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -218,21 +232,30 @@ public class PrincipalFr extends javax.swing.JFrame {
     private void btnCargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarArchivoActionPerformed
         System.out.println("SALE UN FILECHOOSER");
         FilesControl control = new FilesControl();
-        GrafoDirigido grafo = control.leerMapa();
+        control.eliminarArchivo("example/mapa.png");
+
+        grafo = control.leerMapa();
         if (grafo != null) {
+            po.setGrafo(grafo);
 
             Grafico gf = new Grafico();
             po.actualizarComponentes(grafo.getNodos());
 
             gf.writerDot(gf.getValue(grafo.getArcos()));
-            gf.graphvizJava("example/ejemplo.dot", "example/ej.png");
+            gf.graphvizJava("example/mapa.dot", "example/mapa.png");
 
-            Runnable runnable = () -> {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    while (!FilesControl.existencia("example/mapa.png")) {
+                        try {
+                            Thread.sleep(900);
+                            System.out.println("cargando imagen");
+                        } catch (InterruptedException e) {
+                        }
+                    }
+                    actualizarImagen(RUTA);
                 }
-                loadImage(RUTA);
             };
             Thread hilo = new Thread(runnable);
             hilo.start();
@@ -247,21 +270,47 @@ public class PrincipalFr extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnRecargarImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecargarImgActionPerformed
-        loadImage(RUTA);
+        imagen.removeAll();
+        imagen.validate();
+        imagen.repaint();
+        actualizarImagen(RUTA);
     }//GEN-LAST:event_btnRecargarImgActionPerformed
 
+    private void masZoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_masZoomActionPerformed
+
+        Image img = new ImageIcon(RUTA).getImage();
+        Image zoom = img.getScaledInstance(imagen.getWidth() + 100, imagen.getHeight() + 100, Image.SCALE_REPLICATE);
+        imagen.setIcon(new ImageIcon(zoom));
+    }//GEN-LAST:event_masZoomActionPerformed
+
+    private void menosZoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menosZoomActionPerformed
+        Image img = new ImageIcon(RUTA).getImage();
+        Image zoom = img.getScaledInstance(imagen.getWidth() - 100, imagen.getHeight() - 100, Image.SCALE_REPLICATE);
+        imagen.setIcon(new ImageIcon(zoom));
+    }//GEN-LAST:event_menosZoomActionPerformed
+
+    private void actualizarImagen(String path) {
+        ImageIcon icono = new ImageIcon(path);
+        icono.getImage().flush(); // Forzar la actualización de la caché
+        Image img = icono.getImage();
+        icono = new ImageIcon(img);
+        imagen.setIcon(icono);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnCargarArchivo;
     private javax.swing.JMenuItem btnRecargarImg;
     private javax.swing.JMenuItem btnSalir;
     private javax.swing.JLabel etiquetaHora;
+    private javax.swing.JLabel imagen;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JMenuItem masZoom;
+    private javax.swing.JMenuItem menosZoom;
     private javax.swing.JButton opciones;
+    private javax.swing.JScrollPane scrollPane;
     // End of variables declaration//GEN-END:variables
 }
