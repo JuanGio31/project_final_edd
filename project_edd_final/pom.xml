@@ -13,7 +13,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+
     <build>
         <plugins>
             <plugin>
@@ -39,14 +39,14 @@
             </plugin>
         </plugins>
     </build>
-    
+
     <dependencies>
         <dependency>
             <groupId>guru.nidi</groupId>
             <artifactId>graphviz-java</artifactId>
             <version>0.18.1</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.netbeans.external</groupId>
             <artifactId>AbsoluteLayout</artifactId>
@@ -58,14 +58,14 @@
             <artifactId>flatlaf</artifactId>
             <version>3.4.1</version>
         </dependency>
-        
+
         <dependency>
             <groupId>drawer</groupId>
             <artifactId>drawer</artifactId>
             <version>1</version>
             <type>jar</type>
         </dependency>
-        
+
         <dependency>
             <groupId>net.java.dev.timingframework</groupId>
             <artifactId>timingframework</artifactId>
@@ -92,7 +92,6 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
 
 
 </project>

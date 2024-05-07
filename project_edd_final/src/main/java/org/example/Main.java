@@ -1,4 +1,4 @@
-package org.example.modelo.estructuras;
+package org.example;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.io.IOException;
