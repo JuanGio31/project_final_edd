@@ -6,19 +6,19 @@ package org.example.modelo.estructuras;
  */
 public class QueueObject implements Comparable<QueueObject> {
 
-    public Vertice vertex;
-    public int priority;
+    Vertice vertice;
+    int prioridad;
 
     public QueueObject(Vertice v, int p) {
-        this.vertex = v;
-        this.priority = p;
+        this.vertice = v;
+        this.prioridad = p;
     }
 
     @Override
     public int compareTo(QueueObject o) {
-        if (this.priority == o.priority) {
+        if (this.prioridad == o.prioridad) {
             return 0;
-        } else if (this.priority > o.priority) {
+        } else if (this.prioridad > o.prioridad) {
             return 1;
         } else {
             return -1;

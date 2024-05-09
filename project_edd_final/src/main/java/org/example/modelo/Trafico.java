@@ -51,18 +51,6 @@ public class Trafico {
         return new int[]{hora_inicio, hora_finaliza, probabilidad_trafico};
     }
 
-//    public String calcularVelocidad(Object dato, int tipo) {
-//        //Si es 0 => es un vehiculo, de lo contrario => caminar
-//        if (tipo == 0) {
-//            int rapidez = dato.getDistancia() / (dato.getTiempo_vehiculo() * (1 + probabilidad_trafico));
-//            return "Rapidez: " + rapidez;
-//        } else if (tipo == 1) {
-//            int rapidez = dato.getDistancia() / dato.getTiempo_pie();
-//            return "Rapidez: " + rapidez;
-//        }
-//
-//        return null;
-//    }
     public String getOrigen() {
         return origen;
     }
@@ -82,5 +70,10 @@ public class Trafico {
     @Override
     public String toString() {
         return origen + " - " + destino + " - " + hora_inicio + " - " + hora_finaliza + " - " + probabilidad_trafico;
+    }
+
+    public int getRapidez() {
+        
+        return 0;
     }
 }

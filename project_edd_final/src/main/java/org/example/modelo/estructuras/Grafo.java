@@ -11,7 +11,7 @@ public class Grafo {
     private boolean esDirigido;
 
     public Grafo() {
-        esDirigido = false;
+        esDirigido = true;
         vertices = new ArrayList<>();
         arcos = new ArrayList<>();
     }
@@ -186,5 +186,13 @@ public class Grafo {
 
     public void setArcos(List<Arco> arcos) {
         this.arcos = arcos;
+    }
+
+    public boolean isEsDirigido() {
+        return esDirigido;
+    }
+
+    public void setEsDirigido(boolean esDirigido) {
+        this.esDirigido = esDirigido;
     }
 }

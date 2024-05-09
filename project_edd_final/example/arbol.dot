@@ -1,0 +1,10 @@
+digraph BTree {
+node [shape=record];
+node2082878270 [label="<f0> Escuintla | <f1> Sacatepequez"];
+node1365784255 [label="<f0> AltaVerapaz | <f1> BajaVerapaz | <f2> Chimaltenango | <f3> Chiquimula | <f4> ElProgreso"];
+node1487647733 [label="<f0> Guatemala | <f1> Huehuetenango | <f2> Izabal | <f3> Jalapa | <f4> Jutiapa | <f5> Peten | <f6> Quetzaltenango | <f7> Quiche | <f8> Retalhuleu"];
+node1777784674 [label="<f0> SanMarcos | <f1> SantaRosa | <f2> Solola | <f3> Suchitepequez | <f4> Totonicapan | <f5> Zacapa"];
+node2082878270:f0 -> node1365784255;
+node2082878270:f1 -> node1487647733;
+node2082878270:f2 -> node1777784674;
+}

@@ -76,7 +76,7 @@ public class Grafico {
              * en la linea de comandos esto es:
              * dot -Tpng -o archivo.png archivo.dot
              */
-            pbuilder = new ProcessBuilder("dot", "-Tpng", "-o", direccionPng, direccionDot);
+            pbuilder = new ProcessBuilder("dot", "-Tpng", "-Gdpi=72", "-o", direccionPng, direccionDot);
             pbuilder.redirectErrorStream(true);
             // Ejecuta el proceso
             pbuilder.start();

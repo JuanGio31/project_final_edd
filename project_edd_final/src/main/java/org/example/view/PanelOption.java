@@ -206,6 +206,11 @@ public class PanelOption extends javax.swing.JPanel {
     }
     private void btnGenArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenArbolActionPerformed
         System.out.println("<<NUEVO ARBOL>>");
+//        Arbol a = new Arbol(fr);
+//        a.setLocationRelativeTo(null);
+//        a.setVisible(true);
+        BTree bTree = new BTree(5);
+        bTree.Inicio();
         fr.showDrawer();
     }//GEN-LAST:event_btnGenArbolActionPerformed
 

@@ -8,43 +8,43 @@ import java.util.*;
  */
 public class Dijkstra {
 
-    public static Dictionary[] dijkstra(Grafo g, Vertice start) {
-        Dictionary<String, Integer> distances = new Hashtable<>();
-        Dictionary<String, Vertice> previous = new Hashtable<>();
-        PriorityQueue<QueueObject> queue = new PriorityQueue<>();
+    public static Map[] dijkstra(Grafo g, Vertice start) {
+        Map<String, Integer> distancia = new HashMap<>();
+        Map<String, Vertice> previo = new HashMap<>();
+        PriorityQueue<QueueObject> cola = new PriorityQueue<>();
 
-        queue.add(new QueueObject(start, 0));
+        cola.add(new QueueObject(start, 0));
 
         for (Vertice v : g.getVertices()) {
             if (v != start) {
-                distances.put(v.getNombre(), Integer.MAX_VALUE);
+                distancia.put(v.getNombre(), Integer.MAX_VALUE);
             }
-            previous.put(v.getNombre(), new Vertice("Null"));
+            previo.put(v.getNombre(), new Vertice("Null"));
         }
 
-        distances.put(start.getNombre(), 0);
+        distancia.put(start.getNombre(), 0);
 
-        while (!queue.isEmpty()) {
-            Vertice current = queue.poll().vertex;
-            for (Arco e : current.getArcos()) {
-                Integer alternative = distances.get(current.getNombre()) + e.getPeso().getDistancia();
+        while (!cola.isEmpty()) {
+            Vertice actual = cola.poll().vertice;
+            for (Arco e : actual.getArcos()) {
+                Integer alternative = distancia.get(actual.getNombre()) + e.getPeso().getDistancia();
                 String neighborValue = e.getDestino().getNombre();
-                if (alternative < distances.get(neighborValue)) {
-                    distances.put(neighborValue, alternative);
-                    previous.put(neighborValue, current);
-                    queue.add(new QueueObject(e.getDestino(), distances.get(neighborValue)));
+                if (alternative < distancia.get(neighborValue)) {
+                    distancia.put(neighborValue, alternative);
+                    previo.put(neighborValue, actual);
+                    cola.add(new QueueObject(e.getDestino(), distancia.get(neighborValue)));
                 }
             }
         }
-        return new Dictionary[]{distances, previous};
+        return new Map[]{distancia, previo};
     }
 
     public static List<String> shortestPathBetween(Grafo g, Vertice origen, Vertice destino) {
         //String str = "";
         List<String> camino = new ArrayList<>();
-        Dictionary[] dijkstraDictionaries = dijkstra(g, origen);
-        Dictionary distances = dijkstraDictionaries[0];
-        Dictionary previous = dijkstraDictionaries[1];
+        Map[] dijkstraDictionaries = dijkstra(g, origen);
+        Map distances = dijkstraDictionaries[0];
+        Map previous = dijkstraDictionaries[1];
 
         Integer distance = (Integer) distances.get(destino.getNombre());
         System.out.println("Shortest Distance between " + origen.getNombre() + " and " + destino.getNombre());

@@ -1,10 +1,14 @@
 package org.example.view;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javaswingdev.drawer.DrawerController;
 import javaswingdev.drawer.Drawer;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import org.example.modelo.Congestionamiento;
 import org.example.modelo.FilesControl;
@@ -76,6 +80,7 @@ public class PrincipalFr extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         btnCargarArchivo = new javax.swing.JMenuItem();
         btnTrafico = new javax.swing.JMenuItem();
+        configHora = new javax.swing.JMenuItem();
         btnSalir = new javax.swing.JMenuItem();
         masZ = new javax.swing.JMenu();
         minZ = new javax.swing.JMenu();
@@ -187,6 +192,15 @@ public class PrincipalFr extends javax.swing.JFrame {
             }
         });
         jMenu1.add(btnTrafico);
+
+        configHora.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/configHora.png"))); // NOI18N
+        configHora.setText("Configurar Hora");
+        configHora.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                configHoraActionPerformed(evt);
+            }
+        });
+        jMenu1.add(configHora);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/salir.png"))); // NOI18N
         btnSalir.setText("Salir");
@@ -354,12 +368,25 @@ public class PrincipalFr extends javax.swing.JFrame {
         contador++;
     }//GEN-LAST:event_btnAvanzarActionPerformed
 
+    private void configHoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configHoraActionPerformed
+        ConfigHoraDialog chd = new ConfigHoraDialog(this);
+        chd.setLocationRelativeTo(null);
+        chd.setVisible(true);
+    }//GEN-LAST:event_configHoraActionPerformed
+
     private void actualizarImagen(String path) {
+//        try {
+//            BufferedImage bufferedImage = ImageIO.read(new File(path));
+//            Image image = bufferedImage.getScaledInstance(600, 400, Image.SCALE_DEFAULT);
+
         ImageIcon icono = new ImageIcon(path);
         icono.getImage().flush(); // Forzar la actualización de la caché
         Image img = icono.getImage();
         icono = new ImageIcon(img);
         imagen.setIcon(icono);
+//        } catch (IOException e) {
+//            System.out.println("No es posible cargar la imagen");
+//        }
     }
 
     private void refreshTxt() {
@@ -374,6 +401,7 @@ public class PrincipalFr extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnCargarArchivo;
     private javax.swing.JMenuItem btnSalir;
     private javax.swing.JMenuItem btnTrafico;
+    private javax.swing.JMenuItem configHora;
     private javax.swing.JLabel etiquetaHora;
     private javax.swing.JLabel imagen;
     private javax.swing.JMenu jMenu1;
